@@ -11,4 +11,4 @@ const getPartner = async (req, res) => {
   }
 };
 
-module.exports = getPartners;
+module.exports = getPartner;

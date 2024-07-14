@@ -1,5 +1,6 @@
 // server/index.js
 const express = require("express");
+const cors = require("cors");
 const pool = require("./config/db");
 
 const getHome = require("./api/get/getHome");
@@ -12,6 +13,7 @@ const getRecentNews = require("./api/get/getRecentNews");
 const getTestimonial = require("./api/get/getTestimonial");
 
 const app = express();
+app.use(cors());
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -28,7 +30,6 @@ app.get("/partner", getPartner);
 app.get("/project", getProject);
 app.get("/recentnews", getRecentNews);
 app.get("/testimonial", getTestimonial);
-app.post("/deneme", postDeneme);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
