@@ -1,12 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 
-import slides from "../Constant/ProjectSlides.jsx";
-
 export default function Projects() {
   const [currentSlide, setCurrentSlide] = useState(0);
+
+  const [slides, setSlides] = useState([]);
+
+  useEffect(() => {
+    // Verileri getir
+    axios
+      .get("http://localhost:3000/project")
+      .then((response) => {
+        setSlides(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching project:", error);
+      });
+  }, []);
+  console.log("project1", slides);
 
   const handleNext = () => {
     setCurrentSlide((prevSlide) =>
@@ -45,7 +59,7 @@ export default function Projects() {
                 ? "opacity-90 scale-100"
                 : "opacity-100 scale-125"
             }`}
-            style={{ backgroundImage: slide.backgroundImage }}
+            style={{ backgroundImage: `url(${slide.project_photo})` }}
           ></div>
           <div
             className={`absolute left-0 p-10 md:left-32 flex flex-col text-white gap-10 items-start justify-center h-screen w-full transition-all duration-700 ease-in-out ${
@@ -55,10 +69,12 @@ export default function Projects() {
             }`}
           >
             <div className="text-8xl flex gap-1 font-bold">
-              <span className="text-white">{slide.title}</span>
+              <span className="text-white">{slide.project_title}</span>
               <span className="text-red-500">.</span>
             </div>
-            <div className="text-xl w-80 md:w-[450px]">{slide.description}</div>
+            <div className="text-xl w-80 md:w-[450px]">
+              {slide.project_comment}
+            </div>
             <div>
               <button className="bg-red-500 p-3 px-4">SEE PROJECT</button>
             </div>
