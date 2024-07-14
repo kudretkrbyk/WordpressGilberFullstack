@@ -3,6 +3,13 @@ const express = require("express");
 const pool = require("./config/db");
 
 const getHome = require("./api/get/getHome");
+const getAbout = require("./api/get/getAbout");
+const getContact = require("./api/get/getContact");
+const getEducation = require("./api/get/getEducation");
+const getPartner = require("./api/get/getPartner");
+const getProject = require("./api/get/getProject");
+const getRecentNews = require("./api/get/getRecentNews");
+const getTestimonial = require("./api/get/getTestimonial");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,6 +21,13 @@ app.get("/", (req, res) => {
 });
 
 app.get("/home", getHome);
+app.get("/about", getAbout);
+app.get("/contact", getContact);
+app.get("/education", getEducation);
+app.get("/partner", getPartner);
+app.get("/project", getProject);
+app.get("/recentnews", getRecentNews);
+app.get("/testimonial", getTestimonial);
 app.post("/deneme", postDeneme);
 
 app.listen(PORT, () => {
