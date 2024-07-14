@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import axios from "axios";
 export default function About() {
   const [figmaWidth, setFigmaWidth] = useState(85);
   const [webDesignWidth, setWebDesignWidth] = useState(70);
@@ -8,6 +9,21 @@ export default function About() {
   const [webDesignWidthObserver, setWebDesignWidthObserver] = useState(0);
   const [wordpressWidthObserver, setWordpressWidthObserver] = useState(0);
   const skilBarsRef = useRef(null);
+
+  const [aboutData, setAboutData] = useState([]);
+
+  useEffect(() => {
+    // Verileri getir
+    axios
+      .get("http://localhost:3000/about")
+      .then((response) => {
+        setAboutData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching about:", error);
+      });
+  }, []);
+  console.log("about", aboutData);
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
