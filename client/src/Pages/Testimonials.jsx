@@ -1,13 +1,28 @@
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdOutlineArrowBackIos } from "react-icons/md";
-import slides from "../Constant/TestimonialsSlides.jsx";
+
 import { useEffect, useState, useRef } from "react";
+import axios from "axios";
 
 export default function Testimonials() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderSlides, setSliderSlides] = useState([]);
   const [scale, setScale] = useState("scale-125");
   const imageRef = useRef(null);
+
+  useEffect(() => {
+    // Verileri getir
+    axios
+      .get("http://localhost:3000/testimonial")
+      .then((response) => {
+        setSliderSlides(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching testimonial:", error);
+      });
+  }, []);
+
+  console.log("testimonial", sliderSlides);
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -33,21 +48,15 @@ export default function Testimonials() {
     };
   }, []);
 
-  useEffect(() => {
-    if (slides !== null) {
-      setSliderSlides(slides);
-    }
-  }, []);
-
   const handleNext = () => {
     setCurrentSlide((prevSlide) =>
-      prevSlide === slides.length - 1 ? 0 : prevSlide + 1
+      prevSlide === sliderSlides.length - 1 ? 0 : prevSlide + 1
     );
   };
 
   const handlePrev = () => {
     setCurrentSlide((prevSlide) =>
-      prevSlide === 0 ? slides.length - 1 : prevSlide - 1
+      prevSlide === 0 ? sliderSlides.length - 1 : prevSlide - 1
     );
   };
 
@@ -89,6 +98,13 @@ export default function Testimonials() {
               }`}
             >
               {slide.content}
+              <div className="w-full flex flex-col gap-10 full">
+                <div>{slide.testimonial_ref_title}</div>
+                <div className="flex flex-col gap-8 text-xl">
+                  <div className="font-bold">{slide.testimonial_ref_name} </div>
+                  <div>{slide.testimonial_ref_status} </div>
+                </div>
+              </div>
             </div>
           ))}
           <div className="absolute bottom-0 z-50 flex items-center justify-start w-full gap-10 p-">
