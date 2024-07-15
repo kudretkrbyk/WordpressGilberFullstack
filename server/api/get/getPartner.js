@@ -3,7 +3,7 @@ const pool = require("../../config/db");
 
 const getPartner = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM home");
+    const result = await pool.query("SELECT * FROM partner");
     res.json(result.rows);
   } catch (err) {
     console.error("Error executing query:", err);
