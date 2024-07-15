@@ -3,8 +3,8 @@ import { FaPlay } from "react-icons/fa";
 import axios from "axios";
 
 export default function Home() {
-  const [scale, setScale] = useState("scale-125");
-  const imageRef = useRef(null);
+  const [scale, setScale] = useState({});
+  const imageRefs = useRef([]);
   const [homeData, setHomeData] = useState([]);
 
   useEffect(() => {
@@ -20,39 +20,50 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setScale("scale-100");
-          } else {
-            setScale("scale-125");
-          }
-        });
-      },
-      { threshold: 0.5 } // Görüntülenme oranı (0.5 = %50)
-    );
+    const handleIntersection = (entries) => {
+      entries.forEach((entry) => {
+        const id = entry.target.dataset.id;
+        if (entry.isIntersecting) {
+          setScale((prevScale) => ({ ...prevScale, [id]: 1 }));
+        } else {
+          setScale((prevScale) => ({ ...prevScale, [id]: 1.25 }));
+        }
+      });
+    };
 
-    if (imageRef.current) {
-      observer.observe(imageRef.current);
-    }
+    const observer = new IntersectionObserver(handleIntersection, {
+      threshold: 0.5, // Görüntülenme oranı (0.5 = %50)
+    });
+
+    imageRefs.current.forEach((ref) => {
+      if (ref) {
+        observer.observe(ref);
+      }
+    });
 
     return () => {
-      if (imageRef.current) {
-        observer.unobserve(imageRef.current);
-      }
+      imageRefs.current.forEach((ref) => {
+        if (ref) {
+          observer.unobserve(ref);
+        }
+      });
     };
-  }, []);
+  }, [homeData]);
 
   return (
     <div className="w-full h-screen relative">
-      {homeData.map((home) => (
+      {homeData.map((home, index) => (
         <div key={home.id}>
           {console.log(home)}
           <div className="z-0 absolute top-0 left-0 w-full h-screen overflow-hidden">
             <div
-              ref={imageRef}
-              className={`bg-cover bg-center w-full h-screen bg-[url('http://paul-themes.com/wordpress/gilber/wp-content/uploads/2020/12/home-mobile-640x1080.jpg')] md:bg-[url(${home.home_photo_link})] transition-transform duration-[4000ms] ${scale}`}
+              ref={(el) => (imageRefs.current[index] = el)}
+              data-id={home.id}
+              style={{
+                transform: `scale(${scale[home.id] || 1.25})`,
+                transition: "transform 4s",
+              }}
+              className={`bg-cover bg-center w-full h-screen bg-[url('http://paul-themes.com/wordpress/gilber/wp-content/uploads/2020/12/home-mobile-640x1080.jpg')] md:bg-[url(${home.home_photo_link})]`}
             ></div>
           </div>
 
