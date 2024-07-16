@@ -22,7 +22,7 @@ export default function Blog() {
       <div className=" flex flex-col gap-10 w-full p-5 md:p-32 xl:p-48  items-start justify-center">
         <div className="text-xl">Recent news</div>
         <div className="flex flex-col xl:flex-row w-full h-full gap-10">
-          {recentNewsData.map((data, index) => (
+          {recentNewsData.map((data) => (
             <div key={data.id} className="group w-full relative">
               <div className=" w-full">
                 <AnimationBorder></AnimationBorder>
