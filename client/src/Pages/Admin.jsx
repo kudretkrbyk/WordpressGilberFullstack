@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setActiveComponent } from "../redux/slices/activeComponentSlice";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RiCloseLargeLine } from "react-icons/ri";
 
@@ -14,14 +16,15 @@ import Contact from "./Contact";
 
 export default function Admin() {
   const [menuWidthControl, setMenuWidthControl] = useState(false);
-  const [activeComponent, setActiveComponent] = useState("");
+  const dispatch = useDispatch();
+  const activeComponent = useSelector((state) => state.activeComponent);
 
   const handleMenuWControl = () => {
     setMenuWidthControl(!menuWidthControl);
   };
 
   const handleSetActiveComponent = (data) => {
-    setActiveComponent(data);
+    dispatch(setActiveComponent(data));
     setMenuWidthControl(false);
   };
 

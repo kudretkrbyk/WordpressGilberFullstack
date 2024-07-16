@@ -1,12 +1,16 @@
 import { useEffect, useState, useRef } from "react";
+import { MdEditNote } from "react-icons/md";
 import { FaPlay } from "react-icons/fa";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function Home() {
   const [scale, setScale] = useState({});
   const imageRefs = useRef([]);
   const [homeData, setHomeData] = useState([]);
 
+  const activeComponent = useSelector((state) => state.activeComponent);
+  console.log("burası Home redux verisi", activeComponent);
   useEffect(() => {
     // Verileri getir
     axios
