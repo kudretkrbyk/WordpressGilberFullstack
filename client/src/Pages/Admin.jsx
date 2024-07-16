@@ -10,6 +10,7 @@ import Education from "./Education";
 import Partners from "./Partners";
 import Projects from "./Projects";
 import Testimonials from "./Testimonials";
+import Contact from "./Contact";
 
 export default function Admin() {
   const [menuWidthControl, setMenuWidthControl] = useState(false);
@@ -40,6 +41,8 @@ export default function Admin() {
         return <Projects />;
       case "Testimonial":
         return <Testimonials />;
+      case "Contact":
+        return <Contact />;
       default:
         return <div></div>;
     }
@@ -53,11 +56,11 @@ export default function Admin() {
             activeComponent || menuWidthControl ? "text-white" : "text-black"
           } `}
         >
-          <div>Sayfaları Düzenle</div>
+          <div className="text-2xl">Sayfaları Düzenle</div>
           <div>
             <GiHamburgerMenu
               onClick={handleMenuWControl}
-              className=" size-10"
+              className=" size-10  hover:cursor-pointer"
             />
           </div>
         </div>
@@ -70,25 +73,58 @@ export default function Admin() {
           <div className="z-40 flex flex-col items-center justify-center gap-5 p-10 w-full text-white text-xl">
             <div className=" w-2/3 flex items-center justify-end  ">
               <RiCloseLargeLine
-                className="size-10"
+                className="size-10 hover:cursor-pointer"
                 onClick={() => setMenuWidthControl(false)}
               />
             </div>
 
-            <div onClick={() => handleSetActiveComponent("Home")}>Home</div>
-            <div onClick={() => handleSetActiveComponent("About")}>About</div>
-            <div onClick={() => handleSetActiveComponent("Blog")}>Blog</div>
-            <div onClick={() => handleSetActiveComponent("Education")}>
+            <div
+              className=" hover:cursor-pointer "
+              onClick={() => handleSetActiveComponent("Home")}
+            >
+              Home
+            </div>
+            <div
+              className=" hover:cursor-pointer "
+              onClick={() => handleSetActiveComponent("About")}
+            >
+              About
+            </div>
+            <div
+              className=" hover:cursor-pointer "
+              onClick={() => handleSetActiveComponent("Blog")}
+            >
+              Blog
+            </div>
+            <div
+              className=" hover:cursor-pointer "
+              onClick={() => handleSetActiveComponent("Education")}
+            >
               Education
             </div>
-            <div onClick={() => handleSetActiveComponent("Partners")}>
+            <div
+              className=" hover:cursor-pointer "
+              onClick={() => handleSetActiveComponent("Partners")}
+            >
               Partners
             </div>
-            <div onClick={() => handleSetActiveComponent("Projects")}>
+            <div
+              className=" hover:cursor-pointer "
+              onClick={() => handleSetActiveComponent("Projects")}
+            >
               Projects
             </div>
-            <div onClick={() => handleSetActiveComponent("Testimonial")}>
+            <div
+              className=" hover:cursor-pointer "
+              onClick={() => handleSetActiveComponent("Testimonial")}
+            >
               Testimonial
+            </div>
+            <div
+              className=" hover:cursor-pointer "
+              onClick={() => handleSetActiveComponent("Contact")}
+            >
+              Contact
             </div>
           </div>
         </div>
