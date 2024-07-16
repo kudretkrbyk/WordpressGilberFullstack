@@ -78,7 +78,27 @@ export default function Home() {
                 <FaPlay className="size-10 group-hover:scale-110 duration-500" />
               </div>
             </div>
-            <div className="z-40"> {home.home_tittle} </div>
+            {/*  Bu yaklaşım aslında ziyaretçi Home sayfasını görüntülerken, Admin home sayfasını düzenliyorsa hatalı görüntülenmesine sebep olacaktır! 
+             Ancak sayfa sayısını artırmamak amacıyla bu yaklaşımla devam edilecektir! */}
+            <div
+              className={`z-40${
+                activeComponent === "home" ? "hidden" : "flex"
+              }`}
+            >
+              {" "}
+              {home.home_tittle}{" "}
+            </div>
+            <div
+              className={`${
+                activeComponent === "home" ? "hidden" : "flex"
+              }  items-center justify-between z-40 w-full h-12 border border-white p-3 `}
+            >
+              <div className="z-40 "> {home.home_tittle} </div>
+              <div className=" right-0 top-1/2">
+                <MdEditNote className="size-10" />
+              </div>
+            </div>
+
             <div className="flex items-end gap-2 z-40 text-xl">
               <div className="text-5xl">{home.home_name} </div>
               <div className="text-5xl text-red-500">.</div>
