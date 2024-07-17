@@ -78,9 +78,6 @@ export default function About() {
     };
   }, [skillRefs]);
 
-  console.log("about skill:", skills);
-  console.log("about tüm data", aboutData);
-
   return (
     <div className="flex flex-col xl:flex-row items-center justify-around w-full xl:h-screen h-full bg-[#161616] gap-14 p-5 md:p-20">
       <div className="w-full h-[500px] flex items-center xl:justify-start justify-center md:px-20">

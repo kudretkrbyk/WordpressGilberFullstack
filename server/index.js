@@ -11,6 +11,7 @@ const getPartner = require("./api/get/getPartner");
 const getProject = require("./api/get/getProject");
 const getRecentNews = require("./api/get/getRecentNews");
 const getTestimonial = require("./api/get/getTestimonial");
+const updateHome = require("./api/post/updateHome");
 
 const app = express();
 app.use(cors());
@@ -30,6 +31,8 @@ app.get("/partner", getPartner);
 app.get("/project", getProject);
 app.get("/recentnews", getRecentNews);
 app.get("/testimonial", getTestimonial);
+
+app.use("/api/post/updateHome", updateHome);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -8,9 +8,12 @@ export default function Home() {
   const [scale, setScale] = useState({});
   const imageRefs = useRef([]);
   const [homeData, setHomeData] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedHome, setEditedHome] = useState({});
 
   const activeComponent = useSelector((state) => state.activeComponent);
   console.log("burası Home redux verisi", activeComponent);
+
   useEffect(() => {
     // Verileri getir
     axios
@@ -53,6 +56,38 @@ export default function Home() {
       });
     };
   }, [homeData]);
+  console.log("homeData", homeData);
+
+  const handleEditClick = (home) => {
+    setIsEditing(true);
+    setEditedHome(home);
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditedHome((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleUpdateClick = () => {
+    axios
+      .put(
+        `http://localhost:3000/api/post/updateHome/${editedHome.id}`,
+        editedHome
+      )
+      .then((response) => {
+        console.log("Veri güncellendi:", response.data);
+        setIsEditing(false); // Düzenleme modunu kapat
+        setHomeData((prev) =>
+          prev.map((home) => (home.id === editedHome.id ? editedHome : home))
+        );
+      })
+      .catch((error) => {
+        console.error("Güncelleme hatası:", error);
+      });
+  };
 
   return (
     <div className="w-full h-screen relative">
@@ -78,31 +113,74 @@ export default function Home() {
                 <FaPlay className="size-10 group-hover:scale-110 duration-500" />
               </div>
             </div>
-            {/*  Bu yaklaşım aslında ziyaretçi Home sayfasını görüntülerken, Admin home sayfasını düzenliyorsa hatalı görüntülenmesine sebep olacaktır! 
-             Ancak sayfa sayısını artırmamak amacıyla bu yaklaşımla devam edilecektir!adminControl değişkeni eklenerek çözülebilir  */}
-            {activeComponent === "Home" ? (
-              <div className=" w-full h-full border border-white relative">
-                <div className="absolute right-0 top-0 hover:cursor-pointer z-50 ">
-                  <MdEditNote className="size-10" />
-                </div>
-                <div className={` flex flex-col gap-10 z-40 w-full h-12 p-3 `}>
-                  <div className="z-40 "> {home.home_tittle} </div>
 
-                  <div className="flex items-end gap-2 z-40 text-xl">
-                    <div className="text-5xl">{home.home_name} </div>
-                    <div className="text-5xl text-red-500">.</div>
-                  </div>
-                  <div className="z-40">
-                    Working with client and community, we deliver masterplans
-                    that create vibrant new places and spaces, attract people,
-                    and encourage.
+            {activeComponent === "Home" ? (
+              isEditing ? (
+                <div className="w-full h-[500px] border border-white relative text-black">
+                  <div className="flex flex-col gap-5 z-40 w-full p-3">
+                    <input
+                      type="text"
+                      name="home_tittle"
+                      value={editedHome.home_tittle}
+                      onChange={handleInputChange}
+                      className="z-40"
+                    />
+                    <div className="flex items-end gap-2 z-40 text-xl ">
+                      <input
+                        type="text"
+                        name="home_name"
+                        value={editedHome.home_name}
+                        onChange={handleInputChange}
+                        className="text-5xl w-full"
+                      />
+                    </div>
+                    <textarea
+                      name="description"
+                      value={editedHome.description}
+                      onChange={handleInputChange}
+                      className="z-40 w-full h-48"
+                    >
+                      Working with client and community, we deliver masterplans
+                      that create vibrant new places and spaces, attract people,
+                      and encourage.
+                    </textarea>
+                    <button
+                      onClick={handleUpdateClick}
+                      className="z-40 bg-blue-500 text-white p-2 rounded"
+                    >
+                      Güncelle
+                    </button>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="w-full h-full border border-white relative">
+                  <div
+                    className="absolute right-0 top-0 hover:cursor-pointer z-50 "
+                    onClick={() => handleEditClick(home)}
+                  >
+                    <MdEditNote className="size-10" />
+                  </div>
+                  <div
+                    className={` flex flex-col gap-10 z-40 w-full h-12 p-3 `}
+                  >
+                    <div className="z-40"> {home.home_tittle} </div>
+
+                    <div className="flex items-end gap-2 z-40 text-xl">
+                      <div className="text-5xl">{home.home_name} </div>
+                      <div className="text-5xl text-red-500">.</div>
+                    </div>
+                    <div className="z-40">
+                      Working with client and community, we deliver masterplans
+                      that create vibrant new places and spaces, attract people,
+                      and encourage.
+                    </div>
+                  </div>
+                </div>
+              )
             ) : (
-              <div className=" w-full h-full  ">
-                <div className={` flex flex-col gap-10 z-40 w-full h-12 p-3 `}>
-                  <div className="z-40 "> {home.home_tittle} </div>
+              <div className="w-full h-full">
+                <div className={`flex flex-col gap-10 z-40 w-full h-12 p-3`}>
+                  <div className="z-40"> {home.home_tittle} </div>
 
                   <div className="flex items-end gap-2 z-40 text-xl">
                     <div className="text-5xl">{home.home_name} </div>
