@@ -3,10 +3,12 @@ import { MdArrowForwardIos } from "react-icons/md";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
 import axios from "axios";
-
+import { useSelector } from "react-redux";
+import { MdEditNote } from "react-icons/md";
 export default function Education() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderSlides, setSliderSlides] = useState([]);
+  const activeComponent = useSelector((state) => state.activeComponent);
 
   useEffect(() => {
     // Verileri getir
@@ -59,42 +61,85 @@ export default function Education() {
             <button className="bg-red-500 p-3 px-4">DOWNLOAD RESUME</button>
           </div>
         </div>
-        <div className="relative w-full h-[1000px] flex flex-col md:flex-row overflow-hidden ">
-          {slides.map((slideGroup, index) => (
-            <div
-              key={index}
-              className={`absolute w-full h-full transition-transform duration-500   ${
-                index === currentSlide ? "translate-x-0" : "translate-x-full"
-              }`}
-              style={{
-                transform: `translateX(${(index - currentSlide) * 100}%)`,
-              }}
-            >
-              {" "}
-              {console.log("slidegroup", slideGroup)}
-              {slideGroup.map((slide) => (
-                <div
-                  key={slide.id}
-                  className=" flex flex-col items-center justify-center md:p-0 md:px-28 z-40 gap-5   w-full  text-white"
-                >
-                  <div className="flex flex-col xl:flex-row items-center justify-around gap-5 w-full">
-                    <div className="w-full">
-                      <img src={slide.education_icon} alt="education icon" />
-                    </div>
-                    <div className="flex flex-col w-full">
-                      <span>{slide.education_year}</span>
-                      <span>{slide.education_title}</span>
-                    </div>
-                    <div className="w-full">{slide.education_comment}</div>
-                  </div>
-                  <div className="w-full py-2">
-                    <div className="bg-gray-500 w-full h-[2px]"></div>
-                  </div>
-                </div>
-              ))}
+        {activeComponent === "Education" ? (
+          <div className="relative w-full h-[1000px] flex flex-col md:flex-row overflow-hidden border ">
+            <div className="absolute top-0 right-0 hover:cursor-pointer z-50">
+              <MdEditNote className="text-white size-10" />
             </div>
-          ))}
-        </div>
+            {slides.map((slideGroup, index) => (
+              <div
+                key={index}
+                className={`absolute w-full h-full transition-transform duration-500   ${
+                  index === currentSlide ? "translate-x-0" : "translate-x-full"
+                }`}
+                style={{
+                  transform: `translateX(${(index - currentSlide) * 100}%)`,
+                }}
+              >
+                {" "}
+                {console.log("slidegroup", slideGroup)}
+                {slideGroup.map((slide) => (
+                  <div
+                    key={slide.id}
+                    className=" flex flex-col items-center justify-center md:p-0 md:px-28 z-40 gap-5   w-full  text-white"
+                  >
+                    <div className="flex flex-col xl:flex-row items-center justify-around gap-5 w-full">
+                      <div className="w-full">
+                        <img src={slide.education_icon} alt="education icon" />
+                      </div>
+                      <div className="flex flex-col w-full">
+                        <span>{slide.education_year}</span>
+                        <span>{slide.education_title}</span>
+                      </div>
+                      <div className="w-full">{slide.education_comment}</div>
+                    </div>
+                    <div className="w-full py-2">
+                      <div className="bg-gray-500 w-full h-[2px]"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="relative w-full h-[1000px] flex flex-col md:flex-row overflow-hidden ">
+            {slides.map((slideGroup, index) => (
+              <div
+                key={index}
+                className={`absolute w-full h-full transition-transform duration-500   ${
+                  index === currentSlide ? "translate-x-0" : "translate-x-full"
+                }`}
+                style={{
+                  transform: `translateX(${(index - currentSlide) * 100}%)`,
+                }}
+              >
+                {" "}
+                {console.log("slidegroup", slideGroup)}
+                {slideGroup.map((slide) => (
+                  <div
+                    key={slide.id}
+                    className=" flex flex-col items-center justify-center md:p-0 md:px-28 z-40 gap-5   w-full  text-white"
+                  >
+                    <div className="flex flex-col xl:flex-row items-center justify-around gap-5 w-full">
+                      <div className="w-full">
+                        <img src={slide.education_icon} alt="education icon" />
+                      </div>
+                      <div className="flex flex-col w-full">
+                        <span>{slide.education_year}</span>
+                        <span>{slide.education_title}</span>
+                      </div>
+                      <div className="w-full">{slide.education_comment}</div>
+                    </div>
+                    <div className="w-full py-2">
+                      <div className="bg-gray-500 w-full h-[2px]"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
+
         <div className="absolute bottom-0 left-0 p-5 flex md:hidden gap-2 z-40">
           {slides.map((_, dotIndex) => (
             <GoDotFill
