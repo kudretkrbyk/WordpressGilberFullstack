@@ -3,12 +3,16 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+
+import { MdEditNote } from "react-icons/md";
 
 export default function Testimonials() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderSlides, setSliderSlides] = useState([]);
   const [scale, setScale] = useState("scale-125");
   const imageRef = useRef(null);
+  const activeComponent = useSelector((state) => state.activeComponent);
 
   useEffect(() => {
     // Verileri getir
@@ -85,43 +89,91 @@ export default function Testimonials() {
             business.
           </div>
         </div>
-        <div className="text-white flex flex-col gap-10 w-full xl:w-1/2 h-[600px] xl:h-[500px] relative overflow-hidden ">
-          {sliderSlides.map((slide, index) => (
-            <div
-              key={slide.id}
-              className={`absolute  p-10 left-0 w-full h-full transition-transform duration-500 ${
-                index === currentSlide
-                  ? "translate-x-0"
-                  : index < currentSlide
-                  ? "-translate-x-full"
-                  : "translate-x-full"
-              }`}
-            >
-              {slide.content}
-              <div className="w-full flex flex-col gap-10 full">
-                <div>{slide.testimonial_ref_title}</div>
-                <div className="flex flex-col gap-8 text-xl">
-                  <div className="font-bold">{slide.testimonial_ref_name} </div>
-                  <div>{slide.testimonial_ref_status} </div>
+        {activeComponent === "Testimonial" ? (
+          <div className="text-white border flex flex-col gap-10 w-full xl:w-1/2 h-[600px] xl:h-[500px] relative overflow-hidden ">
+            <div className="absolute hover:cursor-pointer top-0 right-0 z-40">
+              <MdEditNote className="text-white size-10" />
+            </div>
+
+            {sliderSlides.map((slide, index) => (
+              <div
+                key={slide.id}
+                className={`absolute  p-10 left-0 w-full h-full transition-transform duration-500 ${
+                  index === currentSlide
+                    ? "translate-x-0"
+                    : index < currentSlide
+                    ? "-translate-x-full"
+                    : "translate-x-full"
+                }`}
+              >
+                {slide.content}
+                <div className="w-full flex flex-col gap-10 full">
+                  <div>{slide.testimonial_ref_title}</div>
+                  <div className="flex flex-col gap-8 text-xl">
+                    <div className="font-bold">
+                      {slide.testimonial_ref_name}{" "}
+                    </div>
+                    <div>{slide.testimonial_ref_status} </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-          <div className="absolute bottom-0 z-50 flex items-center justify-start w-full gap-10 p-">
-            <div
-              className="text-white cursor-pointer border border-white p-2"
-              onClick={handlePrev}
-            >
-              <MdOutlineArrowBackIos className="size-10" />
-            </div>
-            <div
-              className="text-white cursor-pointer border border-white p-2"
-              onClick={handleNext}
-            >
-              <MdArrowForwardIos className="size-10" />
+            ))}
+            <div className="absolute bottom-0 z-50 flex items-center justify-start w-full gap-10 p-">
+              <div
+                className="text-white cursor-pointer border border-white p-2"
+                onClick={handlePrev}
+              >
+                <MdOutlineArrowBackIos className="size-10" />
+              </div>
+              <div
+                className="text-white cursor-pointer border border-white p-2"
+                onClick={handleNext}
+              >
+                <MdArrowForwardIos className="size-10" />
+              </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="text-white flex flex-col gap-10 w-full xl:w-1/2 h-[600px] xl:h-[500px] relative overflow-hidden ">
+            {sliderSlides.map((slide, index) => (
+              <div
+                key={slide.id}
+                className={`absolute  p-10 left-0 w-full h-full transition-transform duration-500 ${
+                  index === currentSlide
+                    ? "translate-x-0"
+                    : index < currentSlide
+                    ? "-translate-x-full"
+                    : "translate-x-full"
+                }`}
+              >
+                {slide.content}
+                <div className="w-full flex flex-col gap-10 full">
+                  <div>{slide.testimonial_ref_title}</div>
+                  <div className="flex flex-col gap-8 text-xl">
+                    <div className="font-bold">
+                      {slide.testimonial_ref_name}{" "}
+                    </div>
+                    <div>{slide.testimonial_ref_status} </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+            <div className="absolute bottom-0 z-50 flex items-center justify-start w-full gap-10 p-">
+              <div
+                className="text-white cursor-pointer border border-white p-2"
+                onClick={handlePrev}
+              >
+                <MdOutlineArrowBackIos className="size-10" />
+              </div>
+              <div
+                className="text-white cursor-pointer border border-white p-2"
+                onClick={handleNext}
+              >
+                <MdArrowForwardIos className="size-10" />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
