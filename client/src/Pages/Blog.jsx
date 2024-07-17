@@ -26,12 +26,15 @@ export default function Blog() {
       <div className=" flex flex-col gap-10 w-full p-5 md:p-32 xl:p-48  items-start justify-center">
         <div className="text-xl">Recent news</div>
         {activeComponent === "Blog" ? (
-          <div className="relative flex flex-col xl:flex-row w-full h-full gap-10 border border-white p-10">
-            <div className="absolute z-40 top-0 right-0">
-              <MdEditNote className="text-white size-10" />
-            </div>
+          <div className="relative flex flex-col xl:flex-row w-full h-full gap-10 border border-white ">
             {recentNewsData.map((data) => (
-              <div key={data.id} className="group w-full relative">
+              <div
+                key={data.id}
+                className="group w-full relative border border-red-400"
+              >
+                <div className="absolute z-50 top-0 -right-10">
+                  <MdEditNote className="text-white size-10 z-40 hover:cursor-pointer" />
+                </div>
                 <div className=" w-full">
                   <AnimationBorder></AnimationBorder>
                 </div>
