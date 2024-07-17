@@ -81,27 +81,41 @@ export default function Home() {
             {/*  Bu yaklaşım aslında ziyaretçi Home sayfasını görüntülerken, Admin home sayfasını düzenliyorsa hatalı görüntülenmesine sebep olacaktır! 
              Ancak sayfa sayısını artırmamak amacıyla bu yaklaşımla devam edilecektir!adminControl değişkeni eklenerek çözülebilir  */}
             {activeComponent === "Home" ? (
-              <div
-                className={`flex items-center justify-between z-40 w-full h-12 border border-white p-3 `}
-              >
-                <div className="z-40 "> {home.home_tittle} </div>
-                <div className=" right-0 top-1/2">
+              <div className=" w-full h-full border border-white relative">
+                <div className="absolute right-0 top-0 hover:cursor-pointer z-50 ">
                   <MdEditNote className="size-10" />
+                </div>
+                <div className={` flex flex-col gap-10 z-40 w-full h-12 p-3 `}>
+                  <div className="z-40 "> {home.home_tittle} </div>
+
+                  <div className="flex items-end gap-2 z-40 text-xl">
+                    <div className="text-5xl">{home.home_name} </div>
+                    <div className="text-5xl text-red-500">.</div>
+                  </div>
+                  <div className="z-40">
+                    Working with client and community, we deliver masterplans
+                    that create vibrant new places and spaces, attract people,
+                    and encourage.
+                  </div>
                 </div>
               </div>
             ) : (
-              <div className={`z-40 flex`}>{home.home_tittle}</div>
-            )}
+              <div className=" w-full h-full  ">
+                <div className={` flex flex-col gap-10 z-40 w-full h-12 p-3 `}>
+                  <div className="z-40 "> {home.home_tittle} </div>
 
-            <div className="flex items-end gap-2 z-40 text-xl">
-              <div className="text-5xl">{home.home_name} </div>
-              <div className="text-5xl text-red-500">.</div>
-            </div>
-            <div className="z-40">
-              Working with client and community, we deliver masterplans that
-              create vibrant new places and spaces, attract people, and
-              encourage.
-            </div>
+                  <div className="flex items-end gap-2 z-40 text-xl">
+                    <div className="text-5xl">{home.home_name} </div>
+                    <div className="text-5xl text-red-500">.</div>
+                  </div>
+                  <div className="z-40">
+                    Working with client and community, we deliver masterplans
+                    that create vibrant new places and spaces, attract people,
+                    and encourage.
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       ))}
