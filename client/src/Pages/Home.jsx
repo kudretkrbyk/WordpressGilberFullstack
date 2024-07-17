@@ -73,10 +73,11 @@ export default function Home() {
 
   const handleUpdateClick = () => {
     axios
-      .put(
-        `http://localhost:3000/api/post/updateHome/${editedHome.id}`,
-        editedHome
-      )
+      .put(`http://localhost:3000/api/post/updateHome/${editedHome.id}`, {
+        home_tittle: editedHome.home_tittle,
+        home_name: editedHome.home_name,
+        home_cover_title: editedHome.home_cover_title,
+      })
       .then((response) => {
         console.log("Veri güncellendi:", response.data);
         setIsEditing(false); // Düzenleme modunu kapat

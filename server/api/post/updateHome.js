@@ -4,13 +4,12 @@ const pool = require("../../config/db"); // Veritabanı bağlantısı
 
 router.put("/:id", async (req, res) => {
   const { id } = req.params;
-  const { home_tittle, home_name, home_cover_title, home_photo_link } =
-    req.body;
+  const { home_tittle, home_name, home_cover_title } = req.body;
 
   try {
     const result = await pool.query(
-      "UPDATE home SET home_tittle = $1, home_name = $2, home_cover_title = $3, home_photo_link = $4 WHERE id = $5 RETURNING *",
-      [home_tittle, home_name, home_cover_title, home_photo_link, id]
+      "UPDATE home SET home_tittle = $1, home_name = $2, home_cover_title = $3 WHERE id = $4 RETURNING *",
+      [home_tittle, home_name, home_cover_title, id]
     );
 
     if (result.rowCount === 0) {
