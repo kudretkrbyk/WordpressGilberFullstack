@@ -96,7 +96,7 @@ export default function About() {
         `http://localhost:3000/api/post/updateAbout/${aboutData.id}`,
         editedAbout
       )
-      .then((response) => {
+      .then(() => {
         setAboutData(editedAbout);
         setIsEditing(false);
       })
