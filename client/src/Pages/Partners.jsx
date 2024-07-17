@@ -1,7 +1,11 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+
+import { useSelector } from "react-redux";
+import { MdEditNote } from "react-icons/md";
 export default function Partners() {
   const [partnerData, setPartnerData] = useState([]);
+  const activeComponent = useSelector((state) => state.activeComponent);
 
   useEffect(() => {
     // Verileri getir
@@ -23,16 +27,33 @@ export default function Partners() {
       <div className="flex flex-col items-start justify-center gap-10 w-full h-full p-20  ">
         {" "}
         <div className="text-5xl text-white z-40  w-full">Partners</div>
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 justify-items-center justify-center place-items-center gap-1 md:gap-10 z-40 w-full   ">
-          {partnerData.map((slide) => (
-            <div
-              key={slide.id}
-              className="p-10 opacity-50 hover:opacity-100 duration-500 self-center  "
-            >
-              <img src={slide.partner_logo} alt={`Partner ${slide.id}`} />
+        {activeComponent === "Partners" ? (
+          <div className="relative grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 justify-items-center justify-center place-items-center gap-1 md:gap-10 z-40 w-full  border ">
+            <div className="absolute top-0 right-0 hover:cursor-pointer">
+              <MdEditNote className="size-10 text-white" />
             </div>
-          ))}
-        </div>
+
+            {partnerData.map((slide) => (
+              <div
+                key={slide.id}
+                className="p-10 opacity-50 hover:opacity-100 duration-500 self-center  "
+              >
+                <img src={slide.partner_logo} alt={`Partner ${slide.id}`} />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 justify-items-center justify-center place-items-center gap-1 md:gap-10 z-40 w-full   ">
+            {partnerData.map((slide) => (
+              <div
+                key={slide.id}
+                className="p-10 opacity-50 hover:opacity-100 duration-500 self-center  "
+              >
+                <img src={slide.partner_logo} alt={`Partner ${slide.id}`} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
