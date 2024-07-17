@@ -3,9 +3,13 @@ import axios from "axios";
 import { MdArrowForwardIos } from "react-icons/md";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 import { GoDotFill } from "react-icons/go";
+import { useSelector } from "react-redux";
+
+import { MdEditNote } from "react-icons/md";
 
 export default function Projects() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const activeComponent = useSelector((state) => state.activeComponent);
 
   const [slides, setSlides] = useState([]);
 
@@ -44,43 +48,89 @@ export default function Projects() {
           <MdArrowForwardIos className="size-10" />
         </div>
       </div>
-
-      {slides.map((slide, index) => (
-        <div
-          className={`w-full flex items-start justify-start absolute h-screen transition-opacity duration-700 ${
-            index === currentSlide ? "opacity-100 z-30" : "opacity-0 z-20"
-          }`}
-          key={slide.id}
-        >
+      {activeComponent === "Projects" ? (
+        <div>
           {" "}
-          <div
-            className={`absolute bg-cover bg-center w-full h-screen  duration-[2000ms]  ${
-              index === currentSlide
-                ? "opacity-90 scale-100"
-                : "opacity-100 scale-125"
-            }`}
-            style={{ backgroundImage: `url(${slide.project_photo})` }}
-          ></div>
-          <div
-            className={`absolute left-0 p-10 md:left-32 flex flex-col text-white gap-10 items-start justify-center h-screen w-full transition-all duration-700 ease-in-out ${
-              index === currentSlide
-                ? "translate-y-0 opacity-100"
-                : "translate-y-10 opacity-0"
-            }`}
-          >
-            <div className="text-8xl flex gap-1 font-bold">
-              <span className="text-white">{slide.project_title}</span>
-              <span className="text-red-500">.</span>
+          {slides.map((slide, index) => (
+            <div
+              className={`w-full flex border border-white items-start justify-start absolute h-screen transition-opacity duration-700 ${
+                index === currentSlide ? "opacity-100 z-30" : "opacity-0 z-20"
+              }`}
+              key={slide.id}
+            >
+              <div className="absolute z-40 top-1/4 left-0 p-10">
+                <MdEditNote className="text-white size-10" />
+              </div>{" "}
+              <div
+                className={`absolute bg-cover bg-center w-full h-screen  duration-[2000ms]  ${
+                  index === currentSlide
+                    ? "opacity-90 scale-100"
+                    : "opacity-100 scale-125"
+                }`}
+                style={{ backgroundImage: `url(${slide.project_photo})` }}
+              ></div>
+              <div
+                className={`absolute left-0 p-10 md:left-32 flex flex-col text-white gap-10 items-start justify-center h-screen w-full transition-all duration-700 ease-in-out ${
+                  index === currentSlide
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-10 opacity-0"
+                }`}
+              >
+                <div className="text-8xl flex gap-1 font-bold">
+                  <span className="text-white">{slide.project_title}</span>
+                  <span className="text-red-500">.</span>
+                </div>
+                <div className="text-xl w-80 md:w-[450px]">
+                  {slide.project_comment}
+                </div>
+                <div>
+                  <button className="bg-red-500 p-3 px-4">SEE PROJECT</button>
+                </div>
+              </div>
             </div>
-            <div className="text-xl w-80 md:w-[450px]">
-              {slide.project_comment}
-            </div>
-            <div>
-              <button className="bg-red-500 p-3 px-4">SEE PROJECT</button>
-            </div>
-          </div>
+          ))}
         </div>
-      ))}
+      ) : (
+        <div>
+          {" "}
+          {slides.map((slide, index) => (
+            <div
+              className={`w-full flex items-start justify-start absolute h-screen transition-opacity duration-700 ${
+                index === currentSlide ? "opacity-100 z-30" : "opacity-0 z-20"
+              }`}
+              key={slide.id}
+            >
+              {" "}
+              <div
+                className={`absolute bg-cover bg-center w-full h-screen  duration-[2000ms]  ${
+                  index === currentSlide
+                    ? "opacity-90 scale-100"
+                    : "opacity-100 scale-125"
+                }`}
+                style={{ backgroundImage: `url(${slide.project_photo})` }}
+              ></div>
+              <div
+                className={`absolute left-0 p-10 md:left-32 flex flex-col text-white gap-10 items-start justify-center h-screen w-full transition-all duration-700 ease-in-out ${
+                  index === currentSlide
+                    ? "translate-y-0 opacity-100"
+                    : "translate-y-10 opacity-0"
+                }`}
+              >
+                <div className="text-8xl flex gap-1 font-bold">
+                  <span className="text-white">{slide.project_title}</span>
+                  <span className="text-red-500">.</span>
+                </div>
+                <div className="text-xl w-80 md:w-[450px]">
+                  {slide.project_comment}
+                </div>
+                <div>
+                  <button className="bg-red-500 p-3 px-4">SEE PROJECT</button>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="absolute bottom-0 left-0 p-10 flex md:hidden gap-2 z-40">
         {slides.map((_, dotIndex) => (
