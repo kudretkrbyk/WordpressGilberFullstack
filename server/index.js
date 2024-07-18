@@ -17,6 +17,7 @@ const updateContact = require("./api/post/updateContact");
 const updateProject = require("./api/post/updateProject");
 const updateEducation = require("./api/post/updateEducation");
 const updatePartner = require("./api/post/updatePartner");
+const updateTestimonial = require("./api/post/updateTestimonial");
 
 const app = express();
 app.use(cors());
@@ -43,6 +44,7 @@ app.use("/api/post/updateContact", updateContact);
 app.use("/api/post/updateProject", updateProject);
 app.use("/api/post/updateEducation", updateEducation);
 app.use("/api/post/updatePartner", updatePartner);
+app.use("/api/post/updateTestimonial", updateTestimonial);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

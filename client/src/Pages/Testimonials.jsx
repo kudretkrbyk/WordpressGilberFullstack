@@ -14,6 +14,9 @@ export default function Testimonials() {
   const imageRef = useRef(null);
   const activeComponent = useSelector((state) => state.activeComponent);
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTestimonial, setEditedTestimonial] = useState({});
+
   useEffect(() => {
     // Verileri getir
     axios
@@ -63,7 +66,36 @@ export default function Testimonials() {
       prevSlide === 0 ? sliderSlides.length - 1 : prevSlide - 1
     );
   };
+  const handleEditClick = (slide) => {
+    setIsEditing(true);
+    setEditedTestimonial(slide);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedTestimonial((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
+  const handleSaveClick = () => {
+    axios
+      .put(
+        `http://localhost:3000/api/post/updateTestimonial/${editedTestimonial.id}`,
+        editedTestimonial
+      )
+      .then(() => {
+        setSliderSlides((prev) =>
+          prev.map((data) =>
+            data.id === editedTestimonial.id ? editedTestimonial : data
+          )
+        );
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error("Error updating Testimonial:", error);
+      });
+  };
   return (
     <div className="w-full h-screen relative flex items-center justify-center p-5 md:p-20 overflow-hidden">
       <div
@@ -90,49 +122,90 @@ export default function Testimonials() {
           </div>
         </div>
         {activeComponent === "Testimonial" ? (
-          <div className="text-white border flex flex-col gap-10 w-full xl:w-1/2 h-[600px] xl:h-[500px] relative overflow-hidden ">
-            <div className="absolute hover:cursor-pointer top-0 right-0 z-40">
-              <MdEditNote className="text-white size-10" />
-            </div>
+          isEditing ? (
+            <div className=" border flex flex-col gap-10  w-1/2  h-[500px] relative   ">
+              <div className="w-full flex flex-col gap-10 text-black p-5">
+                <div>
+                  <textarea
+                    className="w-full px-4 h-48"
+                    name="testimonial_ref_title"
+                    value={editedTestimonial.testimonial_ref_title}
+                    onChange={handleChange}
+                  ></textarea>
+                </div>
 
-            {sliderSlides.map((slide, index) => (
-              <div
-                key={slide.id}
-                className={`absolute  p-10 left-0 w-full h-full transition-transform duration-500 ${
-                  index === currentSlide
-                    ? "translate-x-0"
-                    : index < currentSlide
-                    ? "-translate-x-full"
-                    : "translate-x-full"
-                }`}
-              >
-                {slide.content}
-                <div className="w-full flex flex-col gap-10 full">
-                  <div>{slide.testimonial_ref_title}</div>
-                  <div className="flex flex-col gap-8 text-xl">
-                    <div className="font-bold">
-                      {slide.testimonial_ref_name}{" "}
-                    </div>
-                    <div>{slide.testimonial_ref_status} </div>
-                  </div>
+                <div className="w-full ">
+                  <input
+                    className="w-full p-3"
+                    name="testimonial_ref_name"
+                    value={editedTestimonial.testimonial_ref_name}
+                    onChange={handleChange}
+                  ></input>
+                </div>
+                <div className="w-full">
+                  <input
+                    className="w-full p-3"
+                    name="testimonial_ref_status"
+                    value={editedTestimonial.testimonial_ref_status}
+                    onChange={handleChange}
+                  ></input>
+                </div>
+                <div className="w-full z-50 text-white">
+                  <button
+                    onClick={handleSaveClick}
+                    className="bg-blue-500 p-3 px-4 rounded-xl w-full z-50"
+                  >
+                    Güncelle
+                  </button>
                 </div>
               </div>
-            ))}
-            <div className="absolute bottom-0 z-50 flex items-center justify-start w-full gap-10 p-">
-              <div
-                className="text-white cursor-pointer border border-white p-2"
-                onClick={handlePrev}
-              >
-                <MdOutlineArrowBackIos className="size-10" />
-              </div>
-              <div
-                className="text-white cursor-pointer border border-white p-2"
-                onClick={handleNext}
-              >
-                <MdArrowForwardIos className="size-10" />
+            </div>
+          ) : (
+            <div className="text-white border flex flex-col gap-10 w-full xl:w-1/2 h-[600px] xl:h-[500px] relative overflow-hidden ">
+              {sliderSlides.map((slide, index) => (
+                <div
+                  key={slide.id}
+                  className={`absolute  p-10 left-0 w-full h-full transition-transform duration-500 ${
+                    index === currentSlide
+                      ? "translate-x-0"
+                      : index < currentSlide
+                      ? "-translate-x-full"
+                      : "translate-x-full"
+                  }`}
+                >
+                  <div className="w-full flex flex-col gap-10 full">
+                    <div>{slide.testimonial_ref_title}</div>
+                    <div className="flex flex-col gap-8 text-xl">
+                      <div className="font-bold">
+                        {slide.testimonial_ref_name}{" "}
+                      </div>
+                      <div>{slide.testimonial_ref_status} </div>
+                    </div>
+                  </div>
+                  <div className="absolute hover:cursor-pointer top-0 right-0 z-40">
+                    <MdEditNote
+                      onClick={() => handleEditClick(slide)}
+                      className="text-white size-10"
+                    />
+                  </div>
+                </div>
+              ))}
+              <div className="absolute bottom-0 z-50 flex items-center justify-start w-full gap-10 p-">
+                <div
+                  className="text-white cursor-pointer border border-white p-2"
+                  onClick={handlePrev}
+                >
+                  <MdOutlineArrowBackIos className="size-10" />
+                </div>
+                <div
+                  className="text-white cursor-pointer border border-white p-2"
+                  onClick={handleNext}
+                >
+                  <MdArrowForwardIos className="size-10" />
+                </div>
               </div>
             </div>
-          </div>
+          )
         ) : (
           <div className="text-white flex flex-col gap-10 w-full xl:w-1/2 h-[600px] xl:h-[500px] relative overflow-hidden ">
             {sliderSlides.map((slide, index) => (
