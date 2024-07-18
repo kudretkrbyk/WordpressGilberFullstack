@@ -12,6 +12,8 @@ export default function Projects() {
   const activeComponent = useSelector((state) => state.activeComponent);
 
   const [slides, setSlides] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedProject, setEditedProject] = useState({});
 
   useEffect(() => {
     // Verileri getir
@@ -24,7 +26,6 @@ export default function Projects() {
         console.error("Error fetching project:", error);
       });
   }, []);
-  console.log("project1", slides);
 
   const handleNext = () => {
     setCurrentSlide((prevSlide) =>
@@ -38,9 +39,39 @@ export default function Projects() {
     );
   };
 
+  const handleEditClick = (slide) => {
+    setIsEditing(true);
+    setEditedProject(slide);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedProject((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSaveClick = () => {
+    axios
+      .put(
+        `http://localhost:3000/api/post/updateProject/${editedProject.id}`,
+        editedProject
+      )
+      .then(() => {
+        setSlides((prev) =>
+          prev.map((contact) =>
+            contact.id === editedProject.id ? editedProject : contact
+          )
+        );
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error("Error updating Contact:", error);
+      });
+  };
   return (
     <div className="w-full h-screen relative overflow-hidden">
-      <div className="absolute hidden md:flex items-center justify-between w-full h-screen p-24 z-40">
+      <div className="absolute left-0 top-1/2 hidden md:flex items-center justify-between w-full  p-24 z-40 ">
         <div className="text-white cursor-pointer" onClick={handlePrev}>
           <MdOutlineArrowBackIos className="size-10" />
         </div>
@@ -49,47 +80,97 @@ export default function Projects() {
         </div>
       </div>
       {activeComponent === "Projects" ? (
-        <div>
-          {" "}
-          {slides.map((slide, index) => (
-            <div
-              className={`w-full flex border border-white items-start justify-start absolute h-screen transition-opacity duration-700 ${
-                index === currentSlide ? "opacity-100 z-30" : "opacity-0 z-20"
-              }`}
-              key={slide.id}
-            >
-              <div className="absolute z-40 top-1/4 left-0 p-10">
-                <MdEditNote className="text-white size-10" />
-              </div>{" "}
-              <div
-                className={`absolute bg-cover bg-center w-full h-screen  duration-[2000ms]  ${
-                  index === currentSlide
-                    ? "opacity-90 scale-100"
-                    : "opacity-100 scale-125"
-                }`}
-                style={{ backgroundImage: `url(${slide.project_photo})` }}
-              ></div>
-              <div
-                className={`absolute left-0 p-10 md:left-32 flex flex-col text-white gap-10 items-start justify-center h-screen w-full transition-all duration-700 ease-in-out ${
-                  index === currentSlide
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-10 opacity-0"
-                }`}
+        isEditing ? (
+          <div
+            className={` z-50 w-full flex flex-col gap-10  items-center justify-center  h-screen  p-20 bg-[#161616]
+                `}
+          >
+            <div className={`z-50 flex gap-2   w-full h-48   `}>
+              <div>
+                {" "}
+                <img
+                  className="w-48 h-48"
+                  src={editedProject.project_photo}
+                ></img>
+              </div>
+              <input
+                onChange={handleChange}
+                name="project_photo"
+                value={editedProject.project_photo}
+                className="w-full z-50"
+              ></input>
+            </div>
+            <div className="text-xl  w-full z-50">
+              <input
+                onChange={handleChange}
+                className="text-black w-full"
+                name="project_title"
+                value={editedProject.project_title}
+              ></input>
+            </div>
+            <div className="text-xl w-full z-50 ">
+              <textarea
+                onChange={handleChange}
+                name="project_comment"
+                value={editedProject.project_comment}
+                className="text-black w-full"
+              ></textarea>
+            </div>
+            <div className="w-full z-50">
+              <button
+                onClick={handleSaveClick}
+                className="bg-blue-500 p-3 px-4 rounded-xl w-full"
               >
-                <div className="text-8xl flex gap-1 font-bold">
-                  <span className="text-white">{slide.project_title}</span>
-                  <span className="text-red-500">.</span>
-                </div>
-                <div className="text-xl w-80 md:w-[450px]">
-                  {slide.project_comment}
-                </div>
-                <div>
-                  <button className="bg-red-500 p-3 px-4">SEE PROJECT</button>
+                Güncelle
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div>
+            {" "}
+            {slides.map((slide, index) => (
+              <div
+                className={`w-full flex border border-white items-start justify-start absolute h-screen transition-opacity duration-700 ${
+                  index === currentSlide ? "opacity-100 z-30" : "opacity-0 z-20"
+                }`}
+                key={slide.id}
+              >
+                <div className="absolute z-50 top-1/4 left-0 p-10  ">
+                  <MdEditNote
+                    onClick={() => handleEditClick(slide)}
+                    className="text-white size-10  hover:cursor-pointer "
+                  />
+                </div>{" "}
+                <div
+                  className={`absolute bg-cover bg-center w-full h-screen  duration-[2000ms]  ${
+                    index === currentSlide
+                      ? "opacity-90 scale-100"
+                      : "opacity-100 scale-125"
+                  }`}
+                  style={{ backgroundImage: `url(${slide.project_photo})` }}
+                ></div>
+                <div
+                  className={`absolute left-0 p-10 md:left-32 flex flex-col text-white gap-10 items-start justify-center h-screen w-full transition-all duration-700 ease-in-out ${
+                    index === currentSlide
+                      ? "translate-y-0 opacity-100"
+                      : "translate-y-10 opacity-0"
+                  }`}
+                >
+                  <div className="text-8xl flex gap-1 font-bold">
+                    <span className="text-white">{slide.project_title}</span>
+                    <span className="text-red-500">.</span>
+                  </div>
+                  <div className="text-xl w-80 md:w-[450px]">
+                    {slide.project_comment}
+                  </div>
+                  <div>
+                    <button className="bg-red-500 p-3 px-4">SEE PROJECT</button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )
       ) : (
         <div>
           {" "}
