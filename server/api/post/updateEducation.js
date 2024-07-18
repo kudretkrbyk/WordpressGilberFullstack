@@ -14,7 +14,7 @@ router.put("/:id", async (req, res) => {
          education_icon = $1, 
          education_year = $2, 
          education_comment = $3,
-         education_title =$4, 
+         education_title =$4
        WHERE id = $5 RETURNING *`,
       [education_icon, education_year, education_comment, education_title, id]
     );

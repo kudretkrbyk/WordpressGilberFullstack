@@ -59,8 +59,8 @@ export default function Projects() {
       )
       .then(() => {
         setSlides((prev) =>
-          prev.map((contact) =>
-            contact.id === editedProject.id ? editedProject : contact
+          prev.map((project) =>
+            project.id === editedProject.id ? editedProject : project
           )
         );
         setIsEditing(false);

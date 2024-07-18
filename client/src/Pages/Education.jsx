@@ -10,6 +10,9 @@ export default function Education() {
   const [sliderSlides, setSliderSlides] = useState([]);
   const activeComponent = useSelector((state) => state.activeComponent);
 
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedEducation, setEditedEducation] = useState({});
+
   useEffect(() => {
     // Verileri getir
     axios
@@ -44,6 +47,37 @@ export default function Education() {
     );
   };
 
+  const handleEditClick = (slide) => {
+    setIsEditing(true);
+    setEditedEducation(slide);
+  };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedEducation((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSaveClick = () => {
+    axios
+      .put(
+        `http://localhost:3000/api/post/updateEducation/${editedEducation.id}`,
+        editedEducation
+      )
+      .then(() => {
+        setSliderSlides((prev) =>
+          prev.map((education) =>
+            education.id === editedEducation.id ? editedEducation : education
+          )
+        );
+        setIsEditing(false);
+      })
+      .catch((error) => {
+        console.error("Error updating education:", error);
+      });
+  };
+
   return (
     <div className="w-full h-[1100px] xl:h-screen relative flex items-stretch justify-center bg-[#161616] overflow-hidden p-5 md:p-0">
       <div className="absolute hidden md:flex items-center justify-between w-full h-full p-14 xl:p-36">
@@ -62,42 +96,95 @@ export default function Education() {
           </div>
         </div>
         {activeComponent === "Education" ? (
-          <div className="relative w-full h-[1000px] flex flex-col md:flex-row overflow-hidden border ">
-            <div className="absolute top-0 right-0 hover:cursor-pointer z-50">
-              <MdEditNote className="text-white size-10" />
-            </div>
+          <div className="relative w-full h-[1000px] flex flex-col  overflow-hidden   ">
             {slides.map((slideGroup, index) => (
               <div
                 key={index}
-                className={`absolute w-full h-full transition-transform duration-500   ${
+                className={`absolute w-full h-full transition-transform duration-500   px-24 ${
                   index === currentSlide ? "translate-x-0" : "translate-x-full"
                 }`}
                 style={{
                   transform: `translateX(${(index - currentSlide) * 100}%)`,
                 }}
               >
-                {" "}
                 {console.log("slidegroup", slideGroup)}
-                {slideGroup.map((slide) => (
-                  <div
-                    key={slide.id}
-                    className=" flex flex-col items-center justify-center md:p-0 md:px-28 z-40 gap-5   w-full  text-white"
-                  >
-                    <div className="flex flex-col xl:flex-row items-center justify-around gap-5 w-full">
-                      <div className="w-full">
-                        <img src={slide.education_icon} alt="education icon" />
-                      </div>
-                      <div className="flex flex-col w-full">
-                        <span>{slide.education_year}</span>
-                        <span>{slide.education_title}</span>
-                      </div>
-                      <div className="w-full">{slide.education_comment}</div>
+                {isEditing ? (
+                  <div className="flex flex-col gap-4">
+                    <div className=" flex   items-center justify-center gap-10 w-full h-48 border text-black   ">
+                      <img
+                        className="w-24 "
+                        src={editedEducation.education_icon}
+                        alt="education icon"
+                      />
+
+                      <textarea
+                        className="w-48 h-full border"
+                        name="education_icon"
+                        value={editedEducation.education_icon}
+                        onChange={handleChange}
+                      ></textarea>
+
+                      <input
+                        name="education_year"
+                        value={editedEducation.education_year}
+                        onChange={handleChange}
+                      ></input>
+                      <input
+                        className="w-24"
+                        name="education_title"
+                        value={editedEducation.education_title}
+                        onChange={handleChange}
+                      ></input>
+
+                      <textarea
+                        className="w-80 h-full"
+                        name="education_comment"
+                        value={editedEducation.education_comment}
+                        onChange={handleChange}
+                      ></textarea>
+
+                      <div className=" top-0 -right-5 hover:cursor-pointer z-50"></div>
                     </div>
-                    <div className="w-full py-2">
-                      <div className="bg-gray-500 w-full h-[2px]"></div>
-                    </div>
+                    <button
+                      onClick={handleSaveClick}
+                      className="bg-blue-500 p-3 px-4 rounded-xl w-full"
+                    >
+                      Güncelle
+                    </button>
                   </div>
-                ))}
+                ) : (
+                  <div>
+                    {" "}
+                    {slideGroup.map((slide) => (
+                      <div
+                        key={slide.id}
+                        className=" flex flex-col items-center justify-center  z-40 gap-5  w-full  text-white"
+                      >
+                        <div className=" flex  xl:flex-row items-center justify-center gap-10 w-full border ">
+                          <div className="w-full">
+                            <img
+                              src={slide.education_icon}
+                              alt="education icon"
+                            />
+                          </div>
+                          <div className="flex flex-col w-full">
+                            <span>{slide.education_year}</span>
+                            <span>{slide.education_title}</span>
+                          </div>
+                          <div className="w-full">
+                            {slide.education_comment}
+                          </div>
+                          <div className=" top-0 -right-5 hover:cursor-pointer z-50">
+                            <MdEditNote
+                              onClick={() => handleEditClick(slide)}
+                              className="text-white size-10"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
