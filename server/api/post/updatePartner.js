@@ -10,8 +10,7 @@ router.put("/:id", async (req, res) => {
     const result = await pool.query(
       `UPDATE partner 
        SET 
-         partner_logo = $1 
-        
+         partner_logo = $1         
        WHERE id = $2 RETURNING *`,
       [partner_logo, id]
     );
