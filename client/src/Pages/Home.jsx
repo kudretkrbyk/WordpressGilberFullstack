@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import { MdEditNote } from "react-icons/md";
+import { RiCloseLargeFill } from "react-icons/ri";
 import { FaPlay } from "react-icons/fa";
 import axios from "axios";
 import { useSelector } from "react-redux";
@@ -59,7 +60,7 @@ export default function Home() {
   console.log("homeData", homeData);
 
   const handleEditClick = (home) => {
-    setIsEditing(true);
+    setIsEditing(!isEditing);
     setEditedHome(home);
   };
 
@@ -151,6 +152,12 @@ export default function Home() {
                     >
                       Güncelle
                     </button>
+                  </div>
+                  <div className="absolute  top-0 -right-12 hover:cursor-pointer">
+                    <RiCloseLargeFill
+                      onClick={handleEditClick}
+                      className="text-white size-10"
+                    />
                   </div>
                 </div>
               ) : (
