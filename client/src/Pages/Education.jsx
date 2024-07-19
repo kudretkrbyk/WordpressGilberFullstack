@@ -5,6 +5,7 @@ import { GoDotFill } from "react-icons/go";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { MdEditNote } from "react-icons/md";
+import { RiCloseLargeFill } from "react-icons/ri";
 export default function Education() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [sliderSlides, setSliderSlides] = useState([]);
@@ -48,7 +49,7 @@ export default function Education() {
   };
 
   const handleEditClick = (slide) => {
-    setIsEditing(true);
+    setIsEditing(!isEditing);
     setEditedEducation(slide);
   };
   const handleChange = (e) => {
@@ -109,7 +110,7 @@ export default function Education() {
               >
                 {console.log("slidegroup", slideGroup)}
                 {isEditing ? (
-                  <div className="flex flex-col gap-4">
+                  <div className="relative flex flex-col gap-4">
                     <div className=" flex   items-center justify-center gap-10 w-full h-48 border text-black   ">
                       <img
                         className="w-24 "
@@ -151,6 +152,12 @@ export default function Education() {
                     >
                       Güncelle
                     </button>
+                    <div className="absolute  top-0 -right-12 hover:cursor-pointer">
+                      <RiCloseLargeFill
+                        onClick={handleEditClick}
+                        className="text-white size-10"
+                      />
+                    </div>
                   </div>
                 ) : (
                   <div>
