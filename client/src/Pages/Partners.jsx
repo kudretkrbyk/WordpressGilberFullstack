@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import { MdEditNote } from "react-icons/md";
+import { RiCloseLargeFill } from "react-icons/ri";
 export default function Partners() {
   const [partnerData, setPartnerData] = useState([]);
   const activeComponent = useSelector((state) => state.activeComponent);
@@ -23,7 +24,7 @@ export default function Partners() {
   }, []);
 
   const handleEditClick = (slide) => {
-    setIsEditing(true);
+    setIsEditing(!isEditing);
     setEditedPartner(slide);
   };
   const handleChange = (e) => {
@@ -64,7 +65,7 @@ export default function Partners() {
         <div className="text-5xl text-white z-40  w-full">Partners</div>
         {activeComponent === "Partners" ? (
           isEditing ? (
-            <div className="flex  justify-items-center justify-center items-center gap-10  z-40 w-full   ">
+            <div className="relative flex  justify-items-center justify-center items-center gap-10  z-40 w-full   ">
               <div key={editedPartner.id} className="p-10 flex gap-10 w-full">
                 <img
                   src={editedPartner.partner_logo}
@@ -82,6 +83,12 @@ export default function Partners() {
                 >
                   Güncelle
                 </button>
+              </div>
+              <div className="absolute  top-0 -right-12 hover:cursor-pointer">
+                <RiCloseLargeFill
+                  onClick={handleEditClick}
+                  className="text-white size-10"
+                />
               </div>
             </div>
           ) : (
