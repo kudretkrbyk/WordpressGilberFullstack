@@ -6,6 +6,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 import { MdEditNote } from "react-icons/md";
+import { RiCloseLargeFill } from "react-icons/ri";
 
 export default function Testimonials() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -67,7 +68,7 @@ export default function Testimonials() {
     );
   };
   const handleEditClick = (slide) => {
-    setIsEditing(true);
+    setIsEditing(!isEditing);
     setEditedTestimonial(slide);
   };
   const handleChange = (e) => {
@@ -124,7 +125,7 @@ export default function Testimonials() {
         {activeComponent === "Testimonial" ? (
           isEditing ? (
             <div className=" border flex flex-col gap-10  w-1/2  h-[500px] relative   ">
-              <div className="w-full flex flex-col gap-10 text-black p-5">
+              <div className="relative w-full flex flex-col gap-10 text-black p-5">
                 <div>
                   <textarea
                     className="w-full px-4 h-48"
@@ -157,6 +158,12 @@ export default function Testimonials() {
                   >
                     Güncelle
                   </button>
+                </div>
+                <div className="z-50 absolute  top-0 -right-10 hover:cursor-pointer ">
+                  <RiCloseLargeFill
+                    onClick={handleEditClick}
+                    className="text-white size-10 z-50"
+                  />
                 </div>
               </div>
             </div>

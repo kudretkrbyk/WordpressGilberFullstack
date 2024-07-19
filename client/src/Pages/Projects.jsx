@@ -6,6 +6,7 @@ import { GoDotFill } from "react-icons/go";
 import { useSelector } from "react-redux";
 
 import { MdEditNote } from "react-icons/md";
+import { RiCloseLargeFill } from "react-icons/ri";
 
 export default function Projects() {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -40,7 +41,7 @@ export default function Projects() {
   };
 
   const handleEditClick = (slide) => {
-    setIsEditing(true);
+    setIsEditing(!isEditing);
     setEditedProject(slide);
   };
   const handleChange = (e) => {
@@ -82,10 +83,10 @@ export default function Projects() {
       {activeComponent === "Projects" ? (
         isEditing ? (
           <div
-            className={` z-50 w-full flex flex-col gap-10  items-center justify-center  h-screen  p-20 bg-[#161616]
+            className={` relative   w-full flex flex-col gap-10  items-center justify-center  h-screen  p-20 bg-[#161616]
                 `}
           >
-            <div className={`z-50 flex gap-2   w-full h-48   `}>
+            <div className={` flex gap-2   w-full h-48   `}>
               <div>
                 {" "}
                 <img
@@ -97,10 +98,10 @@ export default function Projects() {
                 onChange={handleChange}
                 name="project_photo"
                 value={editedProject.project_photo}
-                className="w-full z-50"
+                className="w-full z-40"
               ></input>
             </div>
-            <div className="text-xl  w-full z-50">
+            <div className="text-xl  w-full z-40">
               <input
                 onChange={handleChange}
                 className="text-black w-full"
@@ -108,7 +109,7 @@ export default function Projects() {
                 value={editedProject.project_title}
               ></input>
             </div>
-            <div className="text-xl w-full z-50 ">
+            <div className="text-xl w-full z-40 ">
               <textarea
                 onChange={handleChange}
                 name="project_comment"
@@ -116,13 +117,19 @@ export default function Projects() {
                 className="text-black w-full"
               ></textarea>
             </div>
-            <div className="w-full z-50">
+            <div className="w-full z-40">
               <button
                 onClick={handleSaveClick}
                 className="bg-blue-500 p-3 px-4 rounded-xl w-full"
               >
                 Güncelle
               </button>
+            </div>
+            <div className="z-50 absolute  top-40 left-10 hover:cursor-pointer ">
+              <RiCloseLargeFill
+                onClick={handleEditClick}
+                className="text-white size-10 z-50"
+              />
             </div>
           </div>
         ) : (

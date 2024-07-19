@@ -55,7 +55,7 @@ export default function Admin() {
     <div className=" flex w-full h-screen">
       <div className=" relative flex flex-col w-full h-full">
         <div
-          className={` z-50 flex items-center justify-start gap-10 p-10 ${
+          className={` z-40 flex items-center justify-start gap-10 p-10  w-[600px] ${
             activeComponent || menuWidthControl ? "text-white" : "text-black"
           } `}
         >
