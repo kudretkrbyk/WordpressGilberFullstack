@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { MdEditNote } from "react-icons/md";
+import { RiCloseLargeFill } from "react-icons/ri";
 
 export default function About() {
   const [isEditing, setIsEditing] = useState(false);
@@ -78,7 +79,7 @@ export default function About() {
   }, [skillRefs]);
 
   const handleEditClick = () => {
-    setIsEditing(true);
+    setIsEditing(!isEditing);
     setEditedAbout(aboutData);
   };
 
@@ -124,7 +125,7 @@ export default function About() {
       <div className="flex p-5 xl:px-20 w-full h-[500px]">
         {activeComponent === "About" ? (
           isEditing ? (
-            <div className=" flex flex-col gap-3 items-start justify-center w-full h-full border border-white p-5">
+            <div className="relative flex flex-col gap-3 items-start justify-center w-full h-full border border-white p-5">
               <textarea
                 name="about_cover_title"
                 value={editedAbout.about_cover_title || ""}
@@ -168,6 +169,12 @@ export default function About() {
               >
                 Güncelle
               </button>
+              <div className="absolute  top-0 -right-12 hover:cursor-pointer">
+                <RiCloseLargeFill
+                  onClick={handleEditClick}
+                  className="text-white size-10"
+                />
+              </div>
             </div>
           ) : (
             <div className="relative flex flex-col gap-5 items-start justify-center w-full h-full border border-white p-10">
