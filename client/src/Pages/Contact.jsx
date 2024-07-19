@@ -4,6 +4,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 
 import { MdEditNote } from "react-icons/md";
+import { RiCloseLargeFill } from "react-icons/ri";
 
 export default function Contact() {
   const [contactData, setContactData] = useState([]);
@@ -25,7 +26,7 @@ export default function Contact() {
   }, []);
 
   const handleEditClick = (contact) => {
-    setIsEditing(true);
+    setIsEditing(!isEditing);
     setEditedContact(contact);
   };
 
@@ -65,7 +66,7 @@ export default function Contact() {
       <div className="absolute z-40 flex flex-col xl:flex-row items-center justify-center gap-8 xl:gap-20 w-full h-full text-white p-10 md:p-40">
         {activeComponent === "Contact" ? (
           isEditing ? (
-            <div className="w-full h-full">
+            <div className="relative w-full h-full">
               <div className="p-10 z-40 flex flex-col gap-5 items-start justify-around w-full h-full border">
                 <div className="text-5xl">Contact edit</div>
                 <input
@@ -98,6 +99,12 @@ export default function Contact() {
                 >
                   Güncelle
                 </button>
+              </div>
+              <div className="absolute  top-0 -right-12 hover:cursor-pointer">
+                <RiCloseLargeFill
+                  onClick={handleEditClick}
+                  className="text-white size-10"
+                />
               </div>
             </div>
           ) : (
