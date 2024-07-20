@@ -168,7 +168,7 @@ export default function Testimonials() {
               </div>
             </div>
           ) : (
-            <div className="text-white border flex flex-col gap-10 w-full xl:w-1/2 h-[600px] xl:h-[500px] relative overflow-hidden ">
+            <div className="text-white border flex flex-col gap-10 w-1/2 h-[600px] xl:h-[500px] relative overflow-hidden ">
               {sliderSlides.map((slide, index) => (
                 <div
                   key={slide.id}
@@ -184,7 +184,7 @@ export default function Testimonials() {
                     <div>{slide.testimonial_ref_title}</div>
                     <div className="flex flex-col gap-8 text-xl">
                       <div className="font-bold">
-                        {slide.testimonial_ref_name}{" "}
+                        {slide.testimonial_ref_name}
                       </div>
                       <div>{slide.testimonial_ref_status} </div>
                     </div>

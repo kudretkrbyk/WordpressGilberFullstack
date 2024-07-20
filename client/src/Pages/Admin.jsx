@@ -21,7 +21,7 @@ const components = [
   { name: "Education", component: <Education /> },
   { name: "Partners", component: <Partners /> },
   { name: "Projects", component: <Projects /> },
-  { name: "Testimonials", component: <Testimonials /> },
+  { name: "Testimonial", component: <Testimonials /> },
   { name: "Contact", component: <Contact /> },
 ];
 
