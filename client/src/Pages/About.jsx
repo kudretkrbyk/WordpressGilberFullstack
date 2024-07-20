@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { MdEditNote } from "react-icons/md";
@@ -15,11 +15,20 @@ export default function About() {
     skill_3: { width: 0, observerWidth: 0 },
   });
 
-  const skillRefs = {
-    skill_1: useRef(null),
-    skill_2: useRef(null),
-    skill_3: useRef(null),
-  };
+  // useRef'leri en üst düzeyde tanımlayın
+  const skillRef1 = useRef(null);
+  const skillRef2 = useRef(null);
+  const skillRef3 = useRef(null);
+
+  // useMemo ile skillRefs nesnesini oluşturun
+  const skillRefs = useMemo(
+    () => ({
+      skill_1: skillRef1,
+      skill_2: skillRef2,
+      skill_3: skillRef3,
+    }),
+    []
+  );
 
   useEffect(() => {
     // Verileri getir
@@ -207,11 +216,9 @@ export default function About() {
                     <div className="w-full relative">
                       <div
                         className="absolute z-40 h-2 bg-red-500 rounded-full duration-[4000ms]"
-                        style={{
-                          width: `${skills[skillKey].observerWidth}%`,
-                        }}
+                        style={{ width: `${skills[skillKey].observerWidth}%` }}
                       ></div>
-                      <div className="absolute w-full h-2 bg-white rounded-full"></div>
+                      <div className="absolute z-30 h-2 bg-white w-full rounded-full"></div>
                     </div>
                   </div>
                 ))}
@@ -219,38 +226,7 @@ export default function About() {
             </div>
           )
         ) : (
-          <div className="flex flex-col gap-10 items-start justify-center w-full h-full">
-            <div className="text-white text-2xl font-bold">
-              Great Experience
-            </div>
-            <div className="text-white text-2xl">
-              {aboutData.about_cover_title}
-            </div>
-            <div className="flex flex-col gap-16 w-full">
-              {["skill_1", "skill_2", "skill_3"].map((skillKey, index) => (
-                <div
-                  key={skillKey}
-                  ref={skillRefs[skillKey]}
-                  data-skill={skillKey}
-                  className="w-full text-white flex flex-col gap-3"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>{aboutData[`about_skill_${index + 1}`]}</div>
-                    <div>{skills[skillKey].width}%</div>
-                  </div>
-                  <div className="w-full relative">
-                    <div
-                      className="absolute z-40 h-2 bg-red-500 rounded-full duration-[4000ms]"
-                      style={{
-                        width: `${skills[skillKey].observerWidth}%`,
-                      }}
-                    ></div>
-                    <div className="absolute w-full h-2 bg-white rounded-full"></div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          ""
         )}
       </div>
     </div>
