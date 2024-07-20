@@ -1,4 +1,3 @@
-// server/api/get/getDeneme.js
 const pool = require("../../config/db");
 
 const getEducation = async (req, res) => {

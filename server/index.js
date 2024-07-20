@@ -1,8 +1,8 @@
-// server/index.js
 const express = require("express");
 const cors = require("cors");
 const pool = require("./config/db");
 
+// GET ve POST işlemleri için gerekli modüller
 const getHome = require("./api/get/getHome");
 const getAbout = require("./api/get/getAbout");
 const getContact = require("./api/get/getContact");
@@ -20,6 +20,9 @@ const updatePartner = require("./api/post/updatePartner");
 const updateTestimonial = require("./api/post/updateTestimonial");
 const updateBlog = require("./api/post/updateBlog");
 
+// Middleware
+const authenticateToken = require("./middleware/authMiddleware");
+
 const app = express();
 app.use(cors());
 const PORT = process.env.PORT || 3000;
@@ -30,6 +33,7 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+// GET işlemleri
 app.get("/home", getHome);
 app.get("/about", getAbout);
 app.get("/contact", getContact);
@@ -39,6 +43,10 @@ app.get("/project", getProject);
 app.get("/recentnews", getRecentNews);
 app.get("/testimonial", getTestimonial);
 
+// Auth işlemleri için gerekli modül
+const auth = require("./api/auth/auth");
+
+// POST işlemleri
 app.use("/api/post/updateHome", updateHome);
 app.use("/api/post/updateAbout", updateAbout);
 app.use("/api/post/updateContact", updateContact);
@@ -47,6 +55,9 @@ app.use("/api/post/updateEducation", updateEducation);
 app.use("/api/post/updatePartner", updatePartner);
 app.use("/api/post/updateTestimonial", updateTestimonial);
 app.use("/api/post/updateBlog", updateBlog);
+
+// Auth endpoint'i
+app.use("/api/auth/auth", auth);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

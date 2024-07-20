@@ -216,9 +216,11 @@ export default function About() {
                     <div className="w-full relative">
                       <div
                         className="absolute z-40 h-2 bg-red-500 rounded-full duration-[4000ms]"
-                        style={{ width: `${skills[skillKey].observerWidth}%` }}
+                        style={{
+                          width: `${skills[skillKey].observerWidth}%`,
+                        }}
                       ></div>
-                      <div className="absolute z-30 h-2 bg-white w-full rounded-full"></div>
+                      <div className="absolute h-2 bg-white w-full rounded-full"></div>
                     </div>
                   </div>
                 ))}
@@ -226,7 +228,39 @@ export default function About() {
             </div>
           )
         ) : (
-          ""
+          <div className="relative flex flex-col gap-5 items-start justify-center w-full h-full  p-10">
+            <div className=" absolute right-0 top-0    "></div>
+            <div className="text-white text-2xl font-bold">
+              Great Experience
+            </div>
+            <div className="text-white text-2xl">
+              {aboutData.about_cover_title}
+            </div>
+            <div className="flex flex-col gap-16 w-full">
+              {["skill_1", "skill_2", "skill_3"].map((skillKey, index) => (
+                <div
+                  key={skillKey}
+                  ref={skillRefs[skillKey]}
+                  data-skill={skillKey}
+                  className="w-full text-white flex flex-col gap-3"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>{aboutData[`about_skill_${index + 1}`]}</div>
+                    <div>{skills[skillKey].width}%</div>
+                  </div>
+                  <div className="w-full relative">
+                    <div
+                      className="absolute z-40 h-2 bg-red-500 rounded-full duration-[4000ms]"
+                      style={{
+                        width: `${skills[skillKey].observerWidth}%`,
+                      }}
+                    ></div>
+                    <div className="absolute h-2 bg-white w-full rounded-full"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         )}
       </div>
     </div>
