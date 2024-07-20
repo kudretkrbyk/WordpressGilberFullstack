@@ -29,9 +29,22 @@ const suggestions = {
   Blog: [
     "Blog Post Ekle",
     "Blog Post Sil",
-    " Blog Yazı Düzenle",
+    " Blog Başlık Düzenle",
     "Blog Yazı Sil",
   ],
+  Home: [
+    "Home Post Ekle",
+    "Home Post Sil",
+    " Home Başlık Düzenle",
+    "Home Yazı Sil",
+  ],
+  About: [
+    "About Post Ekle",
+    "About Post Sil",
+    " About Başlık Düzenle",
+    "About Yazı Sil",
+  ],
+
   // Diğer bileşenler için öneriler ekleyin
 };
 
@@ -86,7 +99,7 @@ export default function Admin() {
   };
 
   return (
-    <div className="flex w-full h-screen">
+    <div className="flex w-full h-screen overflow-hidden">
       <div className="relative flex flex-col w-full h-full">
         <div
           className={`z-40 flex items-center justify-start gap-10 p-10 w-[600px] ${
