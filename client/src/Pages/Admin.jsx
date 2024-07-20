@@ -14,8 +14,32 @@ import Projects from "./Projects";
 import Testimonials from "./Testimonials";
 import Contact from "./Contact";
 
+const components = [
+  { name: "Home", component: <Home /> },
+  { name: "About", component: <About /> },
+  { name: "Blog", component: <Blog /> },
+  { name: "Education", component: <Education /> },
+  { name: "Partners", component: <Partners /> },
+  { name: "Projects", component: <Projects /> },
+  { name: "Testimonials", component: <Testimonials /> },
+  { name: "Contact", component: <Contact /> },
+];
+
+const suggestions = {
+  Blog: [
+    "Blog Post Ekle",
+    "Blog Post Sil",
+    " Blog Yazı Düzenle",
+    "Blog Yazı Sil",
+  ],
+  // Diğer bileşenler için öneriler ekleyin
+};
+
 export default function Admin() {
   const [menuWidthControl, setMenuWidthControl] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
   const dispatch = useDispatch();
   const activeComponent = useSelector((state) => state.activeComponent);
 
@@ -26,44 +50,54 @@ export default function Admin() {
   const handleSetActiveComponent = (data) => {
     dispatch(setActiveComponent(data));
     setMenuWidthControl(false);
+    setShowSuggestions(false);
   };
 
   const renderComponent = () => {
-    switch (activeComponent) {
-      case "Home":
-        return <Home />;
-      case "About":
-        return <About />;
-      case "Blog":
-        return <Blog />;
-      case "Education":
-        return <Education />;
-      case "Partners":
-        return <Partners />;
-      case "Projects":
-        return <Projects />;
-      case "Testimonial":
-        return <Testimonials />;
-      case "Contact":
-        return <Contact />;
-      default:
-        return <div></div>;
+    const active = components.find(
+      (component) => component.name === activeComponent
+    );
+    return active ? active.component : <div></div>;
+  };
+
+  const handleSearchChange = (e) => {
+    const term = e.target.value;
+    setSearchTerm(term);
+
+    if (term.trim() === "") {
+      setFilteredSuggestions([]);
+      setShowSuggestions(false);
+    } else {
+      const filtered = Object.entries(suggestions).flatMap(([key, value]) =>
+        value
+          .filter((suggestion) =>
+            suggestion.toLowerCase().includes(term.toLowerCase())
+          )
+          .map((suggestion) => ({ key, suggestion }))
+      );
+      setFilteredSuggestions(filtered);
+      setShowSuggestions(true);
     }
   };
 
+  const handleSuggestionClick = (suggestion) => {
+    setSearchTerm(suggestion.suggestion);
+    setShowSuggestions(false);
+  };
+
   return (
-    <div className=" flex w-full h-screen">
-      <div className=" relative flex flex-col w-full h-full">
+    <div className="flex w-full h-screen">
+      <div className="relative flex flex-col w-full h-full">
         <div
-          className={` z-40 flex items-center justify-start gap-10 p-10  w-[600px] ${
+          className={`z-40 flex items-center justify-start gap-10 p-10 w-[600px] ${
             activeComponent || menuWidthControl ? "text-white" : "text-black"
-          } `}
+          }`}
         >
           <div className="text-2xl">Sayfaları Düzenle</div>
           <div>
             <GiHamburgerMenu
               onClick={handleMenuWControl}
-              className=" size-10  hover:cursor-pointer"
+              className="size-10 hover:cursor-pointer"
             />
           </div>
         </div>
@@ -74,64 +108,54 @@ export default function Admin() {
           } h-screen overflow-hidden duration-1000`}
         >
           <div className="z-40 flex flex-col items-center justify-center gap-5 p-10 w-full text-white text-xl">
-            <div className=" w-2/3 flex items-center justify-end  ">
+            <div className="w-2/3 flex items-center justify-end">
               <RiCloseLargeLine
                 className="size-10 hover:cursor-pointer"
                 onClick={() => setMenuWidthControl(false)}
               />
             </div>
+            <div className="w-80 relative">
+              <div>
+                {" "}
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={handleSearchChange}
+                  placeholder="Ara..."
+                  className="p-2 rounded-md text-black w-80"
+                />
+              </div>
+              <div>
+                {" "}
+                {showSuggestions && (
+                  <div className="absolute w-full bg-gray-200 top-12 p-2 rounded-md shadow-md text-black">
+                    {filteredSuggestions.map((item, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleSuggestionClick(item)}
+                        className="hover:bg-gray-200 p-2 rounded-md cursor-pointer"
+                      >
+                        {item.suggestion}
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>{" "}
+            </div>
 
-            <div
-              className=" hover:cursor-pointer "
-              onClick={() => handleSetActiveComponent("Home")}
-            >
-              Home
-            </div>
-            <div
-              className=" hover:cursor-pointer "
-              onClick={() => handleSetActiveComponent("About")}
-            >
-              About
-            </div>
-            <div
-              className=" hover:cursor-pointer "
-              onClick={() => handleSetActiveComponent("Blog")}
-            >
-              Blog
-            </div>
-            <div
-              className=" hover:cursor-pointer "
-              onClick={() => handleSetActiveComponent("Education")}
-            >
-              Education
-            </div>
-            <div
-              className=" hover:cursor-pointer "
-              onClick={() => handleSetActiveComponent("Partners")}
-            >
-              Partners
-            </div>
-            <div
-              className=" hover:cursor-pointer "
-              onClick={() => handleSetActiveComponent("Projects")}
-            >
-              Projects
-            </div>
-            <div
-              className=" hover:cursor-pointer "
-              onClick={() => handleSetActiveComponent("Testimonial")}
-            >
-              Testimonial
-            </div>
-            <div
-              className=" hover:cursor-pointer "
-              onClick={() => handleSetActiveComponent("Contact")}
-            >
-              Contact
-            </div>
+            {/* Menü bileşenleri */}
+            {components.map((component) => (
+              <div
+                key={component.name}
+                className="hover:cursor-pointer"
+                onClick={() => handleSetActiveComponent(component.name)}
+              >
+                {component.name}
+              </div>
+            ))}
           </div>
         </div>
-        <div className="absolute   z-30 w-full border border-red-500 ">
+        <div className="absolute z-30 w-full border border-red-500">
           {renderComponent()}
         </div>
       </div>
