@@ -56,7 +56,7 @@ app.use("/api/post/updatePartner", updatePartner);
 app.use("/api/post/updateTestimonial", updateTestimonial);
 app.use("/api/post/updateBlog", updateBlog);
 
-// Auth endpoint'i
+// Auth işlemi
 app.use("/api/auth/auth", auth);
 
 app.listen(PORT, () => {
