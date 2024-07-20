@@ -9,12 +9,12 @@ router.put("/:id", async (req, res) => {
 
   try {
     const result = await pool.query(
-      `UPDATE about 
+      `UPDATE contact 
        SET 
          contact_title = $1, 
          contact_address = $2, 
          contact_phone_number = $3, 
-         contact_mail = $4,         
+         contact_mail = $4         
        WHERE id = $5 RETURNING *`,
       [contact_title, contact_address, contact_phone_number, contact_mail, id]
     );
